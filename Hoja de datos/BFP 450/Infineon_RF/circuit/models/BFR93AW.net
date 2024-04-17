@@ -1,0 +1,45 @@
+
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  6   GHZ
+;   >>> BFR93AW <<<
+;   (C) 2014    Infineon    Technologies    AG
+;   Version 2.1 March 2014
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFR93AW C B E
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFR93AW ( _node11 _node22 _node33)
+
+C:cbepar _node2 _node3 C=3.297e-013
+C:cbcpar _node2 _node1 C=2.991e-013
+C:ccepar _node1 _node3 C=2.712e-013
+L:lei _node30 _node3 L=9e-010
+L:lbi _node20 _node2 L=9e-010
+C:cbepck _node20 _node30 C=1e-015
+C:cbcpck _node20 _node1 C=6.06e-014
+C:ccepck _node1 _node30 C=3.088e-014
+L:lb _node22 _node20 L=1.002e-010
+L:le _node33 _node30 L=8e-011
+L:lc _node11 _node1 L=2.618e-010
+
+m_bfr93aw:q1 _node1 _node2 _node3 Mode=1
+
+model m_bfr93aw BJT Tnom=25 Is=7.812e-016 Bf=114.4 Nf=1 Vaf=47.34 Ikf=0.3039 Ise=5.518e-015 \
+      Ne=1.87 Br=19.25 Nr=0.9935 Var=3.148 Ikr=0.09474 Isc=2.383e-016 Nc=1.169 Rb=12.47 Irb=4.381e-005 \
+      Rbm=0.85 Re=0.8144 Rc=1.126 Xtb=1.303 Eg=1.11 Xti=6.548 Cje=2e-012 Vje=0.9 Mje=0.415 \
+      Tf=2.13043e-011 Xtf=40 Vtf=3.40089 Itf=1.36553 Ptf=0.016 Cjc=5.951e-013 Vjc=0.5713 \
+      Mjc=0.3602 Xcjc=1 Tr=4.388e-009 Cjs=0 Mjs=0 Vjs=0.8804 Fc=0.9611 Kf=0 Af=1 NPN=1 PNP=0 \
+      RbModel=1 Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfr93aw

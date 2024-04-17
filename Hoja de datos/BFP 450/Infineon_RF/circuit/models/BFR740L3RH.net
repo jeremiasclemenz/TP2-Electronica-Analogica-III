@@ -1,0 +1,74 @@
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  10  GHZ
+;   >>> BFR740L3RH  <<<
+;   (C) 2012    Infineon    Technologies    AG
+;   Version 3.1 May 2012
+;
+;   Harald Boehm
+;**************************************************************
+; - Please use the global HSPICE parameter TEMP to set the junction
+;   temperature of this device in your circuit to get correct DC
+;   simulation results.
+; - TEMP is calculated by TEMP=TA+Pdc*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated power
+;   P=VCE*IC (IC collector current, VCE collector-emitter voltage).
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 320 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note -Thermal Resistance Calculation- AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature.
+;   Please do not change this value.
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFR740L3RH C B E
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFR740L3RH ( _node1 _node2 _node3)
+
+
+C:cbepar _node22 _node33 C=1.172e-014
+C:cbcpar _node22 _node11 C=4.305e-014
+C:ccepar _node11 _node33 C=1.735e-013
+
+L:lb _node222 _node20 L=4e-010
+L:lc _node111 _node10 L=4e-010
+R:rbs _node222 _node22 R=0.001
+R:rcs _node111 _node11 R=0.001
+
+C:cbepck _node20 _node30 C=3e-014
+C:cbcpck _node20 _node10 C=1.033e-014
+C:ccepck _node10 _node30 C=1e-013
+L:lbx _node20 _node2 L=1e-010
+L:lex _node30 _node3 L=1e-011
+L:lcx _node10 _node1 L=5e-011
+R:rsub _node30 _node4 R=0.19
+R:rsubnpn _node44 _node4 R=578
+R:rpsinker _node4 _node33 R=0.16
+
+m_bfr740l3rh:q1 _node11 _node22 _node33 Mode=1
+
+Mutual:k K=0.1 Inductor1="lb" Inductor2="lc"
+
+
+
+model m_bfr740l3rh BJT Tnom=25 Is=1.362e-015 Bf=632 Nf=1.027 Vaf=120 Ikf=0.09421 Ise=1.4e-013 \
+      Ne=2.6 Br=100 Nr=1 Var=1.7 Ikr=0.0035 Isc=5e-015 Nc=2 Rb=2 Irb=0.000889 Rbm=0.6 Re=0.1019 \
+      Rc=5.14 Xtb=-2.482 Eg=1.034 Xti=0.808 Cje=3.14e-013 Vje=0.8119 Mje=0.1431 Tf=1.667e-012 \
+      Xtf=200 Vtf=0.3493 Itf=0.3 Ptf=1 Cjc=8.419e-014 Vjc=0.4412 Mjc=0.3364 Xcjc=0.6466 Tr=2.786e-008 \
+      Cjs=2.229e-013 Mjs=0.2684 Vjs=0.4393 Fc=0.8156 Kf=2.56e-011 Af=1.798 NPN=1 PNP=0 RbModel=1 \
+      Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfr740l3rh

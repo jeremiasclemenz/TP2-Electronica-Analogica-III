@@ -1,0 +1,59 @@
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  6   GHZ
+;   >>> BFR106  <<<
+;   (C) 2012    Infineon    Technologies    AG
+;   Version 2.1 January 2012
+;**************************************************************
+; - Please use the global HSPICE GP parameter TEMP to specify the
+;   junction temperature of the device in your application to get
+;   correct simulation results. This procedure is necessary because
+;   the GP model does not consider the self heating of the device.
+; - TEMP is calculated by TEMP=TA+Pdc*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated DC power Pdc.
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 110 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note "Thermal Resistance Calculation" AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature during measurement
+;   for the parameter extraction. Please do not change this value.
+;***************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFR106 C B E
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFR106 ( _node1 _node2 _node3)
+
+C:cbepar _node22 _node33 C=2.22e-012
+C:cbcpar _node22 _node11 C=4.288e-013
+C:ccepar _node11 _node33 C=2.621e-015
+L:lb _node22 _node20 L=6.736e-010
+L:le _node33 _node30 L=6.937e-010
+C:cbepck _node20 _node30 C=1.567e-014
+C:cbcpck _node11 _node20 C=1.975e-013
+C:ccepck _node11 _node30 C=1.497e-013
+L:lbx _node20 _node2 L=7.342e-010
+L:lex _node30 _node3 L=6.492e-010
+L:lcx _node11 _node1 L=6.908e-010
+
+m_bfr106:q1 _node11 _node22 _node33 Mode=1
+
+model m_bfr106 BJT Tnom=25 Is=1.779e-015 Bf=113.8 Nf=1 Vaf=27.87 Ikf=1.181 Ise=1.644e-014 \
+      Ne=2 Br=22 Nr=0.9964 Var=3.898 Ikr=0.1065 Isc=8.839e-014 Nc=1.567 Rb=4.5 Irb=0 Rbm=2.5 \
+      Re=0.07303 Rc=5.1 Xtb=1.303 Eg=1.12 Xti=6.548 Cje=4.149e-012 Vje=0.8551 Mje=0.4611 Tf=2.345e-011 \
+      Xtf=10.29 Vtf=7.452 Itf=0.5446 Ptf=0.08058 Cjc=9.627e-013 Vjc=0.5893 Mjc=0.4818 Xcjc=0.5631 \
+      Tr=1.434e-010 Cjs=0 Vjs=1 Mjs=1 Fc=0.5 Kf=8.22e-015 Af=1.51 NPN=1 PNP=0 RbModel=1 Tlev=0 \
+      Tlevc=0
+
+;**************************************************************
+end bfr106

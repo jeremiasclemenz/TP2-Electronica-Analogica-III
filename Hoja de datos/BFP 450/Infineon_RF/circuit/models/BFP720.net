@@ -1,0 +1,72 @@
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  12  GHZ
+;   >>> BFP720  <<<
+;   (C) 2012    Infineon    Technologies    AG
+;   Version 3.1 JULY    2012
+;**************************************************************
+; - Please use the global HSPICE GP parameter TEMP to specify the
+;   junction temperature of the device in your application to get
+;   correct simulation results. This procedure is necessary because
+;   the GP model does not consider the self heating of the device.
+; - TEMP is calculated by TEMP=TA+Pdc*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated DC power Pdc.
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 420 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note "Thermal Resistance Calculation" AN077.
+; - The model has been verified in the junction temperature range
+;   0°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature during measurement
+;   for the parameter extraction. Please do not change this value.
+;***************************************************************
+;.OPTION TNOM=25°C, GMIN= 1.00e-12
+;BFP720 C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP720 ( _node1 _node2 _node3 _node4)
+
+C:cbepar _node22 _node33 C=1.673e-013
+C:cbcpar _node22 _node11 C=4.302e-014
+C:ccepar _node11 _node33 C=1.457e-013
+L:lb _node22 _node20 L=7.12e-010
+L:le _node33 _node30 L=7.9e-011
+L:lc _node11 _node10 L=7.12e-010
+C:cbepck _node20 _node30 C=6e-014
+C:cbcpck _node20 _node10 C=1.222e-015
+C:ccepck _node10 _node30 C=6e-014
+L:lbx _node20 _node2 L=3.02e-010
+L:lex _node30 _node34 L=2.217e-011
+L:lcx _node10 _node1 L=3.02e-010
+
+R:rps _node33 _node55 R=0.1365
+R:rsub _node55 _node30 R=800
+
+R:re1 _node34 _node3 R=1e-03
+R:re2 _node34 _node4 R=1e-03
+
+m_bfp720:q1 _node11 _node22 _node33 Mode=1
+
+m_diode_sub:diode_sub _node55 _node11 Mode=1
+
+model m_diode_sub Diode Is=4.085e-015 N=1.02 Rs=800 Cjo=4e-014 Nbv=1.02 Vj=0.8  IkModel=2 \
+      Tnom=25
+
+model m_bfp720 BJT Tnom=25 Is=7.621e-016 Bf=646.8 Nf=1.017 Vaf=120.2 Ikf=0.08618 Ise=1.782e-014 \
+      Ne=2 Br=90.95 Nr=1.012 Var=1.455 Ikr=0.008585 Isc=2.278e-014 Nc=1.5 Rb=7.151 Irb=0 Rbm=1.031 \
+      Re=0.321 Rc=5.9 Xtb=-2.407 Eg=1.11 Xti=0.3 Cje=6.754e-014 Vje=1.064 Mje=0.1384 Tf=2.611e-012 \
+      Xtf=3.2 Vtf=2.294 Itf=0.7341 Ptf=0.1 Cjc=4.36e-014 Vjc=1.073 Mjc=0.9219 Xcjc=0.5 Tr=2.035e-009 \
+      Cjs=7.013e-014 Mjs=0.09104 Vjs=1.063 Fc=0.5 Kf=3.4e-012 Af=1.5 NPN=1 PNP=0 RbModel=1 \
+      Tlev=0 Tlevc=0
+
+;**************************************************************
+end bfp720

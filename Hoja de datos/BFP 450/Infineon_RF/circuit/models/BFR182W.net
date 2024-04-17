@@ -1,0 +1,45 @@
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  6   GHZ
+;   >>> BFR182W <<<
+;   (C) 2016    Infineon    Technologies    AG
+;   Version 2.2 April 2016
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFR182W C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFR182W ( _node11 _node22 _node33)
+
+
+C:cbepar _node2 _node3 C=2.24e-013
+C:cbcpar _node2 _node1 C=2.169e-013
+C:ccepar _node1 _node3 C=2e-013
+L:le _node33 _node30 L=1e-010
+L:lb _node22 _node20 L=8e-011
+L:lc _node1 _node11 L=3.371e-010
+C:cbepck _node20 _node30 C=4e-014
+C:cbcpck _node1 _node20 C=4e-014
+C:ccepck _node30 _node1 C=8e-014
+L:lbi _node20 _node2 L=8.794e-010
+L:lei _node30 _node3 L=8.613e-010
+
+m_bfr182w:q1 _node1 _node2 _node3 Mode=1
+
+model m_bfr182w BJT Tnom=25 Is=1.767e-016 Bf=122.6 Nf=1 Vaf=75.55 Ikf=0.457 Ise=6.25e-016 \
+      Ne=1.653 Br=11.89 Nr=0.9968 Var=2.837 Ikr=0.07193 Isc=9.862e-015 Nc=2.026 Rb=10.93 Irb=9.65e-005 \
+      Rbm=0.8371 Re=0.2053 Rc=4 Xtb=1.303 Eg=1.11 Xti=6.548 Cje=6.488e-013 Vje=0.9 Mje=0.415 \
+      Tf=1.346e-011 Xtf=139.2 Vtf=2.182 Itf=0.5642 Ptf=0.1 Cjc=2.167e-013 Vjc=0.5482 Mjc=0.3169 \
+      Xcjc=0.788 Tr=1.7e-008 Cjs=0 Mjs=1 Vjs=1 Fc=0.9999 Kf=0 Af=1 NPN=1 PNP=0 RbModel=1 Tlev=0 \
+      Tlevc=0
+
+
+;**************************************************************
+end bfr182w

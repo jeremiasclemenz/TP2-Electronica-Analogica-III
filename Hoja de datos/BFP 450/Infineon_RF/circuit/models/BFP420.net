@@ -1,0 +1,70 @@
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  10  GHZ
+;   >>> BFP420  <<<
+;   (C) 2012    Infineon    Technologies    AG
+;   Version 2.1 January 2012
+;**************************************************************
+; - Please use the global HSPICE GP parameter TEMP to specify the
+;   junction temperature of the device in your application to get
+;   correct simulation results. This procedure is necessary because
+;   the GP model does not consider the self heating of the device.
+; - TEMP is calculated by TEMP=TA+Pdc*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated DC power Pdc.
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 260 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note "Thermal Resistance Calculation" AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature during measurement
+;   for the parameter extraction. Please do not change this value.
+;***************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFP420 C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP420 ( _node1 _node2 _node3 _node4)
+
+C:cbepar _node22 _node33 C=5.592e-014
+C:cbcpar _node22 _node11 C=1.143e-013
+C:ccepar _node11 _node33 C=1.596e-013
+L:lb _node22 _node20 L=7.42e-010
+L:le _node33 _node30 L=1.656e-010
+L:lc _node11 _node10 L=7.7e-010
+C:cbepck _node20 _node30 C=4.741e-014
+C:cbcpck _node20 _node10 C=1.135e-015
+C:ccepck _node10 _node30 C=4.48e-014
+L:lbx _node20 _node2 L=2.339e-010
+L:lex _node30 _node35 L=4.189e-011
+L:lcx _node10 _node1 L=2.243e-010
+
+R:re1 _node35 _node3 R=1e-03
+R:re2 _node35 _node4 R=1e-03
+R:rsub _node55 _node33 R=176.4
+
+m_diode_sub:diode_sub _node55 _node11 Mode=1
+
+m_bfp420:q1 _node11 _node22 _node33 Mode=1
+
+model m_diode_sub Diode Is=4.356e-015 N=1.02 Rs=0.1 Cjo=4e-014 Tnom=25 Nbv=1.02 Vj=0.8  \
+      IkModel=2
+
+model m_bfp420 BJT Tnom=25 Is=3.753e-017 Bf=140.8 Nf=0.9996 Vaf=59.18 Ikf=0.6604 Ise=1e-014 \
+      Ne=2 Br=13.61 Nr=0.9938 Var=2.685 Ikr=0.007013 Isc=3.49e-016 Nc=1.5 Rb=11.99 Irb=0 Rbm=1.521 \
+      Re=0.3062 Rc=2.152 Xtb=0.1187 Eg=1.11 Xti=4.162 Cje=5.621e-013 Vje=0.4892 Mje=0.2565 \
+      Tf=4.83855e-012 Xtf=6.245 Vtf=10.66 Itf=0.5436 Ptf=0 Cjc=1.227e-013 Vjc=0.8453 Mjc=0.6803 \
+      Xcjc=0.7 Tr=4.7e-009 Cjs=4.757e-013 Mjs=1 Vjs=0.5323 Fc=0.4148 Kf=65.9e-12 Af=2.0 NPN=1 \
+      PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+;**************************************************************
+end bfp420

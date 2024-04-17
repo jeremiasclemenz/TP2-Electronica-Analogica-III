@@ -1,0 +1,96 @@
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  10  GHZ
+;   >>> BFP740FESD  <<<
+;   (C) 2011    Infineon    Technologies    AG
+;   Version 2.1 November    2011
+;**************************************************************
+; - Please use the global HSPICE GP parameter TEMP to specify the
+;   junction temperature of the device in your application to get
+;   correct simulation results. This procedure is necessary because
+;   the GP model does not consider the self heating of the device.
+; - TEMP is calculated by TEMP=TA+Pdc*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated DC power Pdc.
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 315 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note "Thermal Resistance Calculation" AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature during measurement
+;   for the parameter extraction. Please do not change this value.
+;***************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFP740FESD C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP740FESD ( _node1 _node2 _node3 _node4)
+
+
+C:cbepar _node22 _node33 C=2.238e-013
+C:cbcpar _node22 _node11 C=3.747e-014
+C:ccepar _node11 _node33 C=1.739e-014
+L:lb _node22 _node20 L=6.808e-010
+L:le _node33 _node30 L=5.756e-011
+L:lc _node11 _node10 L=3.687e-010
+C:cbepck _node20 _node30 C=2.474e-014
+C:cbcpck _node20 _node10 C=1.304e-015
+C:ccepck _node10 _node30 C=1.148e-014
+L:lbx _node20 _node2 L=5.452e-015
+L:lex _node30 _node35 L=4.806e-011
+L:lcx _node10 _node1 L=3.738e-011
+
+
+
+m_d1:d1 _node33 _node25 Mode=1
+m_d2:d2 _node55 _node25 Mode=1
+R:rblfdb _node22 _node25 R=3.2
+R:rps _node33 _node55 R=0.5524
+R:rsub _node30 _node55 R=0.3417
+R:re1 _node35 _node3 R=1e-03
+R:re2 _node35 _node4 R=1e-03
+
+m_d3:d3 _node55 _node15 Mode=1
+m_d4:d4 _node23 _node33 Mode=1
+m_d5:d5 _node23 _node15 Mode=1
+R:rldnbl _node15 _node11 R=14.8
+
+
+m_bfp740fesd:q1 _node11 _node22 _node33 Mode=1
+
+
+model m_d1 Diode Is=3.5e-015 N=1.02 Rs=6.1 Cjo=4e-014 Nbv=1.02 Vj=0.8  IkModel=2 Tnom=25
+
+model m_d2 Diode Is=800e-018 N=1 Rs=4170 Cjo=2.5e-014 Nbv=1 Vj=0.8  IkModel=2 Tnom=25
+
+
+model m_d3 Diode Is=800e-018 N=1.02 Rs=1380 Cjo=3e-014 Nbv=1.02 Vj=0.8  IkModel=2 \
+      Tnom=25
+
+
+model m_d4 Diode Is=3.5e-015 N=1.02 Rs=0.2 Cjo=3e-014 Nbv=1.02 Vj=0.8  IkModel=2 Tnom=25
+
+model m_d5 Diode Is=3.5e-015 N=1.02 Rs=4.7 Cjo=3e-014 Nbv=1.02 Vj=0.8  IkModel=2 Tnom=25
+
+
+
+
+model m_bfp740fesd BJT Tnom=25 Is=1.136e-015 Bf=738.2 Nf=1.014 Vaf=355.5 Ikf=0.1325 Ise=5.97e-015 \
+      Ne=1.737 Br=89.78 Nr=0.98 Var=1.396 Ikr=0.1924 Isc=3.85e-015 Nc=1.5 Rb=3.631 Irb=0 Rbm=2.02 \
+      Re=0.05983 Rc=6.855 Xtb=-2.154 Eg=1.11 Xti=2.728 Cje=1.08e-013 Vje=0.5522 Mje=0.2709 \
+      Tf=1.596e-012 Xtf=7.3788 Vtf=2.70313 Itf=0.712422 Ptf=0.2896 Cjc=7.551e-014 Vjc=0.9845 \
+      Mjc=0.4393 Xcjc=0.6466 Tr=2.3e-007 Cjs=6.09e-013 Mjs=0.1942 Vjs=0.7431 Fc=0.8156 Kf=732e-12 \
+      Af=1.948 NPN=1 PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfp740fesd

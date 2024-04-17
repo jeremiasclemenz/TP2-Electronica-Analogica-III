@@ -1,0 +1,61 @@
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  10  GHZ
+;   >>> BFR380F <<<
+;   (C) 2011    Infineon    Technologies    AG
+;   Version 2.1 September   2011
+;**************************************************************
+; - Please use the global HSPICE parameter TEMP to set the junction
+;   temperature of this device in your circuit to get correct DC
+;   simulation results.
+; - TEMP is calculated by TEMP=TA+P*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated power
+;   P=VCE*IC (IC collector current, VCE collector-emitter voltage).
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 145 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note 'Thermal Resistance Calculation' AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature.
+;   Please do not change this value.
+;***************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFR380F C B E
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFR380F ( _node1 _node2 _node3)
+
+C:cbepar _node22 _node33 C=1.287e-014
+C:cbcpar _node22 _node11 C=3.804e-013
+C:ccepar _node11 _node33 C=1.695e-013
+L:lb _node22 _node20 L=2.257e-010
+L:le _node33 _node30 L=3.572e-010
+C:cbepck _node24 _node34 C=5.689e-015
+C:ccepck _node10 _node34 C=5.854e-014
+C:cbcpck _node24 _node10 C=1.589e-015
+L:lbx _node24 _node2 L=1.469e-010
+L:lex _node34 _node3 L=6.231e-011
+L:lcx _node10 _node1 L=2.247e-010
+R:rcx _node11 _node10 R=0.882
+R:rbx _node20 _node24 R=0.139
+R:rex _node30 _node34 R=0.02676
+
+m_bfr380f:q1 _node11 _node22 _node33 Mode=1
+
+model m_bfr380f BJT Tnom=25 Is=2.254e-016 Bf=182.7 Nf=0.9937 Vaf=55.15 Ikf=0.4285 Ise=1.222e-014 \
+      Ne=2 Br=17.16 Nr=0.9923 Var=2.971 Ikr=0.005662 Isc=6.038e-015 Nc=1.5 Rb=2.564 Irb=0 Rbm=0.01719 \
+      Re=0.1976 Rc=1.932 Xtb=0.2643 Eg=1.11 Xti=4.663 Cje=1.313e-012 Vje=1 Mje=0.34 Tf=7.477e-012 \
+      Xtf=17.27 Vtf=1.329 Itf=0.61 Ptf=4.667 Cjc=2.876e-013 Vjc=0.5861 Mjc=0.4332 Xcjc=1 Tr=1.793e-009 \
+      Cjs=0 Mjs=1 Vjs=1 Fc=0.7064 Kf=2.229e-013 Af=1.64 NPN=1 PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+;**************************************************************
+end bfr380f
