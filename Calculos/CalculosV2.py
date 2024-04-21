@@ -1,21 +1,38 @@
 import numpy as np
+import skrf as rf
+import pandas as pd
+import matplotlib.pyplot as plt
+import re
+import os
 
 # Datos
-f = 2304e6
-S11mod = 0.656
-S11fase = 146.7
-S12mod = 0.122
-S12fase = 46.1
-S21mod = 2.3
-S21fase = 44.7
-S22mod = 0.172
-S22fase = -117.1
+f = 1.6e9
 
-# Cálculos de S-parameters
-S11 = S11mod * np.exp(1j * np.deg2rad(S11fase))
-S12 = S12mod * np.exp(1j * np.deg2rad(S12fase))
-S21 = S21mod * np.exp(1j * np.deg2rad(S21fase))
-S22 = S22mod * np.exp(1j * np.deg2rad(S22fase))
+IC_sel = 110/1000
+Vce_sel = 2.5
+
+# Parametros S
+dato = r'C:\Users\Jeremias\Documents\GitHub\TP2-Electronica-Analogica-III\Hoja de datos\BFP 450\Infineon-RFTransistor\SPAR\BFP450/BFP450_w_noise_'
+str_model = dato+'VCE_'+str(Vce_sel)+'V_IC_'+str(IC_sel)+'A.s2p'
+
+model = rf.Network(str_model)
+S11 = model['1.6ghz'].s[0][0][0]
+S12 = model['1.6ghz'].s[0][0][1]
+S21 = model['1.6ghz'].s[0][1][0]
+S22 = model['1.6ghz'].s[0][1][1]
+
+S11mod = np.abs(S11)
+S11fase = np.angle(S11) * 180 / np.pi
+S12mod = np.abs(S12)
+S12fase = np.angle(S12) * 180 / np.pi
+S21mod = np.abs(S21)
+S21fase = np.angle(S21) * 180 / np.pi
+S22mod = np.abs(S22)
+S22fase = np.angle(S22) * 180 / np.pi
+
+
+
+
 
 # Cálculo de Delta
 Delta = S11 * S22 - S12 * S21
