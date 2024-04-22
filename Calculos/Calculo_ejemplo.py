@@ -9,7 +9,11 @@ S11 = cmath.rect(0.656, math.radians(146.7))  # Ejemplo de valor complejo
 S12 = cmath.rect(0.122, math.radians(46.1))
 S21 = cmath.rect(2.3, math.radians(44.7))
 S22 = cmath.rect(0.172, math.radians(-117.1))
-f = 2304e6
+S11 = (-0.6887813841901239+0.27968511721780415j)
+S12 = (0.0329006355170892+0.05124800662046915j)
+S21 = (2.0992062681698505+3.981498969443093j)
+S22 = (-0.5099988830350469+0.10747362142872341j)
+f = 1.6e9
 # Definir la función para calcular K, Δ, Γin, Γout
 def calcular_parametros(S11, S12, S21, S22):
     delta = S11 * S22 - S12 * S21
@@ -83,7 +87,7 @@ print("\n---------- Pasaje del modelo serie a paralelo ----------")
 
 # Calcular Rp y Xp
 Rp = (Zin.real**2 + Zin.imag**2) / Zin.real #Zin.real*(1+(Zin.imag/Zin.real)**2 )
-Xp = (Zin.real**2 + Zin.imag**2) / Zin.imag
+Xp = (Zin.real**2 + Zin.imag**2) / Zin.imag #Zin.imag*(1+(Zin.real/Zin.imag)**2 )
 
 # Imprimir los resultados
 print("Rp:", Rp)
@@ -92,7 +96,7 @@ print("Xp:", Xp)
 print("\n---------- Cálculo del capacitor ----------")
 
 # Calcular C
-C = 1 / (2 * np.pi * f * Zin.imag)
+C = 1 / (2 * np.pi * f * Xp)
 
 # Imprimir el resultado
 print("C:", C)
