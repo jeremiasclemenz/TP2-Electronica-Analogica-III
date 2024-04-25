@@ -1,0 +1,63 @@
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  6   GHZ
+;   >>> BFP460  <<<
+;   (C) 2011    Infineon    Technologies    AG
+;   Version 2.1     december 2011
+;**************************************************************
+; - Please use the global HSPICE GP parameter TEMP to specify the
+;   junction temperature of the device in your application to get
+;   correct simulation results. This procedure is necessary because
+;   the GP model does not consider the self heating of the device.
+; - TEMP is calculated by TEMP=TA+Pdc*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated DC power Pdc.
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 250 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note "Thermal Resistance Calculation" AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature during measurement
+;   for the parameter extraction. Please do not change this value.
+;***************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFP460 C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP460 ( _node1 _node2 _node3 _node4)
+
+C:cbepar _node22 _node33 C=1.28143e-013
+C:cbcpar _node22 _node11 C=1.442e-013
+C:ccepar _node11 _node33 C=1.57251e-013
+L:lb _node22 _node20 L=8.19879e-010
+L:le _node33 _node30 L=2.70643e-010
+C:cbepck _node20 _node30 C=7.159e-014
+C:cbcpck _node20 _node11 C=1e-015
+C:ccepck _node11 _node30 C=6.715e-014
+L:lbx _node20 _node2 L=4.08478e-010
+L:lex _node30 _node35 L=3.12844e-011
+L:lcx _node11 _node1 L=3.97005e-010
+
+R:re1 _node35 _node3 R=1e-03
+R:re2 _node35 _node4 R=1e-03
+
+m_bfp460:q1 _node11 _node22 _node33 Mode=1
+
+model m_bfp460 BJT Tnom=25 Is=1.221e-016 Bf=187.3 Nf=1.005 Vaf=37.95 Ikf=0.5364 Ise=6.757e-014 \
+      Ne=2.312 Br=14.19 Nr=1.004 Var=2.455 Ikr=0.0866 Isc=1.335e-015 Nc=1.5 Rb=12.3172 Irb=0 \
+      Rbm=1.73939 Re=0.2919 Rc=2.88488 Xtb=-2.2 Eg=1.11 Xti=0.91 Cje=3.967e-013 Vje=0.4605 \
+      Mje=0.4485 Tf=4.46543e-012 Xtf=18.02 Vtf=3.248 Itf=0.8641 Ptf=0.1 Cjc=2.777e-013 Vjc=0.6477 \
+      Mjc=0.2943 Xcjc=0.7031 Tr=2.703e-006 Cjs=0 Mjs=1 Vjs=1 Fc=0.5 Kf=2.9e-13 Af=1.4 NPN=1 \
+      PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfp460

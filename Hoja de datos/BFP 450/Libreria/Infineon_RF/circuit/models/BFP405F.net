@@ -1,0 +1,56 @@
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  12  GHZ
+;   >>> BFP405F <<<
+;   (C) 2014    Infineon    Technologies    AG
+;   Version 3.1 October 2014
+;**************************************************************
+;.OPTION GMIN= 1.00e-12
+;BFP405F 111 22 31 32
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP405F ( _node111 _node22 _node31 _node32)
+
+C:cbepar _node2 _node3 C=1.298e-013
+C:cbcpar _node2 _node10 C=3.516e-014
+C:ccepar _node10 _node3 C=1.546e-015
+L:lex _node30 _node33 L=6.318e-011
+L:lbx _node20 _node22 L=3.058e-010
+L:lcx _node11 _node111 L=2.194e-010
+C:cbepck _node20 _node30 C=6.219e-014
+C:cbcpck _node11 _node20 C=7.843e-015
+C:ccepck _node11 _node30 C=6.427e-014
+L:lb _node2 _node20 L=2.813e-010
+L:le _node3 _node30 L=1.568e-010
+L:lc _node10 _node11 L=6.141e-010
+
+R:re1 _node33 _node31 R=1e-03
+R:re2 _node33 _node32 R=1e-03
+
+R:rsub _node4 _node30 R=39.31
+R:rcx _node1 _node10 R=1
+
+m_diode_sub:diode_sub _node4 _node1 Mode=1
+
+model m_diode_sub Diode Is=3.5e-015 N=1.02 Rs=1380 Cjo=4e-014 Tnom=25 Nbv=1.02 Vj=0.8  \
+      IkModel=2
+
+m_bfp405f:q1 _node1 _node2 _node3 Mode=1
+
+model m_bfp405f BJT Tnom=25 Is=9.786e-018 Bf=122.6 Nf=0.9944 Vaf=55.11 Ikf=0.17 Ise=2.521e-014 \
+      Ne=2.458 Br=17.08 Nr=0.9849 Var=3 Ikr=0.812 Isc=8.824e-017 Nc=1.373 Rb=28.06 Irb=0 Rbm=7.073 \
+      Re=0.8343 Rc=8.855 Xtb=-0.1945 Eg=1.11 Xti=5.65 Cje=9.201e-014 Vje=0.9622 Mje=0.4628 \
+      Tf=5.026e-012 Xtf=710.7 Vtf=1.631 Itf=2.188 Ptf=2.329e-008 Cjc=2.974e-014 Vjc=0.9104 \
+      Mjc=0.7658 Xcjc=0.7499 Tr=1.879e-009 Cjs=3.298e-013 Mjs=0.5521 Vjs=2 Fc=0.5 Kf=0 Af=1 \
+      NPN=1 PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfp405f

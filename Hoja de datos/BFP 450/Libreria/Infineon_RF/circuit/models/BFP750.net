@@ -1,0 +1,68 @@
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  10  GHZ
+;   >>> BFP750  <<<
+;   (C) 2010    Infineon    Technologies    AG
+;   Version 2.1 September   2010
+;**************************************************************
+; - Please use the global HSPICE parameter TEMP to set the junction
+;   temperature of this device in your circuit to get correct DC
+;   simulation results.
+; - TEMP is calculated by TEMP=TA+P*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated power
+;   P=VCE*IC (IC collector current, VCE collector-emitter voltage).
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 360 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note 'Thermal Resistance Calculation' AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature.
+;   Please do not change this value.
+;***************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFP750 C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP750 ( _node1 _node2 _node3 _node4)
+
+
+C:cbepar _node22 _node33 C=2.718e-013
+C:cbcpar _node22 _node11 C=1.398e-013
+C:ccepar _node11 _node33 C=2.07221e-015
+L:lb _node22 _node20 L=9.917e-010
+L:lc _node11 _node10 L=7.02587e-011
+C:cbepck _node20 _node30 C=1.819e-014
+C:cbcpck _node20 _node10 C=3.736e-018
+C:ccepck _node10 _node30 C=3.99247e-013
+L:lbx _node20 _node2 L=6.738e-015
+L:lex _node30 _node35 L=9.035e-011
+L:lcx _node10 _node1 L=8.402e-010
+R:rsub _node30 _node5 R=0.19
+R:rsubnpn _node55 _node5 R=578
+R:rpsinker _node5 _node33 R=0.16
+R:re1 _node35 _node3 R=1e-03
+R:re2 _node35 _node4 R=1e-03
+
+m_bfp750:q1 _node11 _node22 _node33 Mode=1
+
+
+
+model m_bfp750 BJT Tnom=25 Is=3.079e-015 Bf=624.106 Nf=1.011 Vaf=150.2 Ikf=0.245321 Ise=1.31e-014 \
+      Ne=1.666 Br=138.7 Nr=0.98 Var=1.727 Ikr=0.1924 Isc=3.85e-015 Nc=1.5 Rb=2.891 Irb=0.000889 \
+      Rbm=1.504 Re=0.2121 Rc=4.472 Xtb=-2.066 Eg=1.034 Xti=0.808 Cje=6.905e-013 Vje=1.274 \
+      Mje=0.3898 Tf=1.9094e-012 Xtf=5.245 Vtf=1.3 Itf=1.6 Ptf=0.5287 Cjc=2.491e-013 Vjc=0.5152 \
+      Mjc=0.4138 Xcjc=0.6466 Tr=5.76636e-008 Cjs=4.70074e-013 Mjs=0.4784 Vjs=0.4645 Fc=0.8156 \
+      Kf=2.0e-011 Af=1.6 NPN=1 PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfp750

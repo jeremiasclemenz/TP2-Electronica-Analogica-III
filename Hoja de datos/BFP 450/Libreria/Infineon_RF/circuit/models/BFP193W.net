@@ -1,0 +1,50 @@
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  6   GHZ
+;   >>> BFP193W <<<
+;   (C) 2016    Infineon    Technologies    AG
+;   Version 2.2 March 2016
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-15
+;BFP193W C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP193W ( _node11 _node22 _node31 _node32)
+
+
+C:cbepar _node2 _node3 C=5.305e-013
+C:cbcpar _node2 _node1 C=3.725e-013
+C:ccepar _node1 _node3 C=3.333e-013
+L:le _node33 _node30 L=3.217e-011
+L:lb _node22 _node20 L=3.73e-011
+L:lc _node1 _node11 L=2.011e-010
+C:cbepck _node20 _node30 C=2e-014
+C:cbcpck _node20 _node1 C=4e-014
+C:ccepck _node1 _node30 C=6e-014
+L:lbi _node20 _node2 L=7.443e-010
+L:lei _node30 _node3 L=3.388e-010
+
+
+R:re1 _node33 _node31 R=1e-03
+R:re2 _node33 _node32 R=1e-03
+
+
+m_bfp193w:q1 _node1 _node2 _node3 Mode=1
+
+model m_bfp193w BJT Tnom=25 Is=4.669e-016 Bf=126.1 Nf=0.9936 Vaf=64.55 Ikf=0.6219 Ise=3.166e-015 \
+      Ne=1.767 Br=9 Nr=1.025 Var=3.214 Ikr=0.075 Isc=8e-015 Nc=2 Rb=2.885 Irb=0 Rbm=0.8613 Re=0.2616 \
+      Rc=3.134 Xtb=1.303 Eg=1.09 Xti=6.548 Cje=2.221e-012 Vje=0.8816 Mje=0.3741 Tf=1.383e-011 \
+      Xtf=179.9 Vtf=3.031 Itf=2.081 Ptf=0.0397 Cjc=5.633e-013 Vjc=0.5935 Mjc=0.3526 Xcjc=1 \
+      Tr=1.48e-008 Cjs=0 Mjs=0 Vjs=0.7597 Fc=0.9999 Kf=8.931e-017 Af=1 NPN=1 PNP=0 RbModel=1 \
+      Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfp193w

@@ -1,0 +1,45 @@
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  6   GHZ
+;   >>> BFR35AP <<<
+;   (C) 2016    Infineon    Technologies    AG
+;   Version 2.2 April 2016
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFR35AP C B E
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFR35AP ( _node11 _node22 _node33)
+
+C:cbepar _node2 _node3 C=1.872e-013
+C:cbcpar _node2 _node1 C=1.575e-013
+C:ccepar _node1 _node3 C=1.959e-013
+L:lei _node3 _node30 L=1e-009
+L:lbi _node2 _node20 L=1e-009
+C:cbepck _node20 _node30 C=1.304e-014
+C:cbcpck _node1 _node20 C=1.5e-013
+C:ccepck _node1 _node30 C=1.5e-013
+L:lb _node22 _node20 L=3e-010
+L:le _node30 _node33 L=3e-010
+L:lc _node11 _node1 L=5.908e-010
+
+
+m_bfr35ap:q1 _node1 _node2 _node3 Mode=1
+
+model m_bfr35ap BJT Tnom=25 Is=2.241e-016 Bf=127.2 Nf=0.9935 Vaf=55.34 Ikf=0.1506 Ise=2.144e-015 \
+      Ne=1.797 Br=10 Nr=0.99 Var=3.105 Ikr=0.1135 Isc=4.7e-015 Nc=2.001 Rb=9.688 Irb=0.0001166 \
+      Rbm=0.85 Re=0.9388 Rc=4.925 Xtb=1.303 Eg=1.11 Xti=6.548 Cje=6.901e-013 Vje=0.9 Mje=0.4469 \
+      Tf=1.95e-011 Xtf=453.7 Vtf=5.969 Itf=1.249 Ptf=1e-015 Cjc=2.394e-013 Vjc=0.5764 Mjc=0.3352 \
+      Xcjc=0.1048 Tr=5.53e-009 Cjs=0 Mjs=0 Vjs=0.1 Fc=0.9999 Kf=0 Af=1 NPN=1 PNP=0 RbModel=1 \
+      Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfr35ap

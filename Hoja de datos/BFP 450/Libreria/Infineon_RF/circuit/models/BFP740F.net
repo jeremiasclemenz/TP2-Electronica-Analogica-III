@@ -1,0 +1,68 @@
+
+
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  10  GHZ
+;   >>> BFP740F <<<
+;   (C) 2012    Infineon    Technologies    AG
+;   Version 1.1 November    2012
+;**************************************************************
+; - Please use the global HSPICE parameter TEMP to set the junction
+;   temperature of this device in your circuit to get correct DC
+;   simulation results.
+; - TEMP is calculated by TEMP=TA+Pdc*(RthJS+RthSA). The junction
+;   temperature TEMP is the sum of the ambient temperature TA and
+;   the increment of temperature caused by the dissipated power
+;   P=VCE*IC (IC collector current, VCE collector-emitter voltage).
+; - RthJS is the thermal resistance between the junction and the
+;   soldering point. RthJS for this device is 300 K/W. RthSA is the
+;   thermal resistance of the PCB, from the soldering point to the
+;   ambient. For determination of RthSA please refer to Infineon's
+;   Application Note -Thermal Resistance Calculation- AN077.
+; - The model has been verified in the junction temperature range
+;   -25°C to +125°C.
+; - TNOM=25 °C is the nominal ambient temperature.
+;   Please do not change this value.
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFP740F C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP740F ( _node1 _node2 _node3 _node4)
+
+C:cbepar _node22 _node33 C=1.528e-013
+C:cbcpar _node22 _node11 C=6.274e-014
+C:ccepar _node11 _node33 C=1.958e-013
+L:le _node33 _node30 L=1.588e-010
+L:lb _node22 _node20 L=3.61986e-010
+L:lc _node11 _node10 L=3.38494e-010
+C:cbepck _node20 _node30 C=3.5e-014
+C:cbcpck _node20 _node10 C=1e-015
+C:ccepck _node10 _node30 C=3.5e-014
+L:lbx _node20 _node2 L=1.78e-010
+L:lex _node30 _node35 L=5.40267e-011
+L:lcx _node10 _node1 L=1.78e-010
+R:rsub _node30 _node5 R=0.0182719
+R:rsubnpn _node55 _node5 R=213.779
+R:rpsinker _node5 _node33 R=0.276699
+
+R:re1 _node35 _node3 R=1e-03
+R:re2 _node35 _node4 R=1e-03
+
+m_bfp740f:q1 _node11 _node22 _node33 Mode=1
+
+model m_bfp740f BJT Tnom=25 Is=1.249e-015 Bf=987.1 Nf=1.002 Vaf=380.1 Ikf=0.1898 Ise=3.488e-015 \
+      Ne=1.709 Br=115 Nr=1.01 Var=1.229 Ikr=0.02753 Isc=3.205e-015 Nc=2 Rb=7.015 Irb=6.026e-005 \
+      Rbm=1.974 Re=0.18 Rc=4.121 Xtb=-2.7 Eg=1.09 Xti=0.1 Cje=2.531e-013 Vje=0.9286 Mje=0.06125 \
+      Tf=2.331e-012 Xtf=1.159 Vtf=0.5242 Itf=0.3991 Ptf=0.1 Cjc=5.452e-014 Vjc=0.4808 Mjc=0.5812 \
+      Xcjc=1 Tr=1.532e-009 Cjs=1.585e-013 Mjs=0.2454 Vjs=1 Fc=0.2329 Kf=1.616e-021 Af=1.677 \
+      NPN=1 PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+;**************************************************************
+end bfp740f

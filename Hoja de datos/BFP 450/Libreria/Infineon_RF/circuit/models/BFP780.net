@@ -1,0 +1,71 @@
+
+
+
+
+
+;**************************************************************
+; Comments for the user:
+; The VBIC Model includes the self heating effect and the user can switch selfheating on or off.
+; a) no self heating: set Rth = 0
+; b) with self heating: set Rth=80K/W + Rth_PCB (customer)
+; Note: Rth = 80 K/W includes only the thermal resistance of die and package and
+; the thermal resistance of the customer PCB must be added (Rth=80K/W + Rth_PCB)
+;   Infineon    Technologies    AG
+;   VBIC    MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  10  GHZ
+;   >>> BFP780  <<<
+;   (C) 2015    Infineon    Technologies    AG
+;   Version 1.1 October 2015
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFP780 C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP780 ( _node1 _node2 _node3 _node4)
+
+C:ccepar _node11 _node33 C=800e-015
+
+L:lex _node30 _node35 L=3e-011
+L:lbx _node20 _node2 L=3e-011
+L:lcx _node10 _node1 L=3e-011
+
+C:cbpad _node22 _node44 C=30e-015
+C:ccpad _node11 _node44 C=30e-015
+C:cepad _node33 _node44 C=30e-015
+
+L:lb _node22 _node20 L=777e-12
+L:lc _node10 _node11 L=777e-12
+
+C:cbepck _node20 _node30 C=5.703e-015
+C:cbcpck _node10 _node20 C=1.497e-014
+C:ccepck _node10 _node30 C=6.032e-014
+
+R:re1 _node35 _node3 R=1e-03
+R:re2 _node35 _node4 R=1e-03
+
+R:rsub1 _node44 _node30 R=0.2144
+R:rps _node44 _node33 R=0.07306
+
+diode_fb:d1 _node33 _node22 Mode=1
+diode_fbd:d2 _node44 _node22 Mode=1
+
+model diode_fb Diode Is=3.5e-015 N=1 Cjo=10e-15 Rs=6.1 Tnom=25 Nbv=1 Vj=0.8  IkModel=2
+
+model diode_fbd Diode Is=1e-015 N=1 Cjo=10e-15 Rs=1 Tnom=25 Nbv=1 Vj=0.8  IkModel=2
+
+m_bfp780:q1 _node11 _node22 _node33 Mode=1
+
+model m_bfp780 VBIC Tnom=25 Cbeo=2.47e-012 Cje=561.3e-015 Pe=0.7 Me=0.333 Aje=-1 Wbe=1 Cbco=10e-015 \
+      Cjc=668.6e-015 Pc=0.54 Mc=0.333 Ajc=-1 Cjep=2.616e-015 Cjcp=900e-015 Ps=0.6 Ms=0.3 Ajs=-0.5 \
+      Fc=0.94 Vef=545.4 Ver=3.291 Is=2.3e-015 Nf=0.9855 Ibei=1.893e-018 Nei=0.9399 Iben=4.77e-015 \
+      Nen=1.361 Ikf=1 Nr=0.9912 Ibci=157.5e-018 Nci=1.1 Ibcn=4.929e-015 Ncn=1.463 Ikr=0.01178 \
+      Wsp=1 Isp=1e-015 Nfp=1 Ibcip=1e-015 Ncip=1.029 Ibcnp=1e-015 Ncnp=1 Ikp=1e-3 Ibeip=1e-015 \
+      Ibenp=1e-015 Re=0.15 Rcx=0.01 Rci=2.665 Qco=1e-015 Vo=0.0005022 Gamm=5.659e-012 Hrcf=0.21 \
+      Rbx=5 Rbi=1.964 Rbp=265.5 Rs=26.56 Avc1=3.97 Avc2=29.52 Tf=1.6e-012 Qtf=50e-3 Xtf=30 \
+      Vtf=0.7 Itf=1 Tr=1e-015 Td=500e-015 Cth=0 Rth=80 Ea=1.12 Eaie=1.12 Eaic=1.12 Eais=1 Eane=1.12 \
+      Eanc=1.12 Eans=1 Xre=0 Xrb=0 Xrc=0 Xrs=0 Xvo=0 Xis=-1.631 Xii=0 Xin=0 Tnf=0 Tavc=0.002613 \
+      Kfn=0 Afn=1 Bfn=1 NPN=1 PNP=0
+
+;**************************************************************
+end bfp780

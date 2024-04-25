@@ -1,0 +1,83 @@
+; Translated with ADS Netlist Translator (*) 410.shp Mar  8 2014
+;******************************************************************
+
+
+;
+;     INFINEON HSPICE MODEL LIBRARY for RF TRANSISTORS
+;
+;     Version 2.1
+;     Date 2016/04/06
+;
+;     Copyright (C) 2016 by Infineon Technologies AG, Neubiberg, Germany
+;     all rights reserved
+;
+;
+;     This library contains the following RF Transistor models:
+;
+;     BFP181              BFP620F             BFP843
+;     BFP182W             BFP640              BFP843F
+;     BFP183              BFP640ESD           BFQ19S
+;     BFP183W             BFP640F             BFQ790
+;     BFP193              BFP640FESD          BFR106
+;     BFP193W             BFP650              BFR181W
+;     BFP196              BFP720              BFR182
+;     BFP196W             BFP720ESD           BFR182W
+;     BFP405              BFP720F             BFR193F
+;     BFP405F             BFP720FESD          BFR193W
+;     BFP410              BFP740              BFR340F
+;     BFP420              BFP740ESD           BFR35AP
+;     BFP420F             BFP740F             BFR380F
+;     BFP450              BFP740FESD          BFR740L3RH
+;     BFP460              BFP750              BFR840L3RHESD
+;     BFP520              BFP760              BFR843EL3
+;     BFP540              BFP780              BFR92P
+;     BFP540ESD           BFP840ESD           BFR93A
+;     BFP540FESD          BFP840FESD          BFR93AW
+;     BFP620              BFP842ESD
+;
+;******************************************************************
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  6   GHZ
+;   >>> BFP181  <<<
+;   (C) 2013    Infineon    Technologies    AG
+;   Version 2.2 April   2016
+;**************************************************************
+;.OPTION TNOM=25, GMIN= 1.00e-12
+;BFP181 C B E1 E2
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP181 ( _node11 _node22 _node31 _node32)
+
+
+C:cbepar _node2 _node3 C=2.314e-013
+C:cbcpar _node2 _node1 C=1.606e-013
+C:ccepar _node1 _node3 C=7.249e-014
+L:le _node33 _node30 L=1.346e-010
+L:lb _node22 _node20 L=6.47e-011
+L:lc _node1 _node11 L=5.33e-010
+C:cbepck _node20 _node30 C=3e-014
+C:cbcpck _node20 _node1 C=1e-015
+C:ccepck _node1 _node30 C=2.871e-013
+L:lbi _node20 _node2 L=1.594e-009
+L:lei _node30 _node3 L=1.265e-010
+
+
+R:re1 _node33 _node31 R=1e-03
+R:re2 _node33 _node32 R=1e-03
+
+m_bfp181:q1 _node1 _node2 _node3 Mode=1
+
+model m_bfp181 BJT Tnom=25 Is=8.27e-017 Bf=128.4 Nf=0.9958 Vaf=94.57 Ikf=0.5163 Ise=3.852e-016 \
+      Ne=1.699 Br=26.32 Nr=0.9952 Var=3 Ikr=0.02057 Isc=1.353e-016 Nc=1.098 Rb=15.88 Irb=0 \
+      Rbm=0.5682 Re=0.7453 Rc=5.362 Xtb=1 Eg=1.1 Xti=8 Cje=3.607e-013 Vje=0.9 Mje=0.415 Tf=1.235e-011 \
+      Xtf=709.4 Vtf=2.139 Itf=0.5259 Ptf=0.01612 Cjc=1.107e-013 Vjc=0.65 Mjc=0.415 Xcjc=0.8 \
+      Tr=1.0e-9 Cjs=0 Mjs=0.415 Vjs=0.6 Fc=0.9999 Kf=0 Af=1.5 NPN=1 PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfp181

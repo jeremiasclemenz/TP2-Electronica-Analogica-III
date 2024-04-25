@@ -1,0 +1,55 @@
+
+
+
+
+;**************************************************************
+;   Infineon    Technologies    AG
+;   GUMMEL-POON MODEL   IN  HSPICE      SYNTAX
+;   VALID   UP  TO  12  GHZ
+;   >>> BFP720F <<<
+;   (C) 2016    Infineon    Technologies    AG
+;   Version 3.2 May 2016
+;**************************************************************
+;.OPTION GMIN= 1.00e-12
+;BFP720F 111 22 31 32
+
+Options gmin=1.0e-14 TNOM = 25  Imax= 100 Imelt= 100 
+
+define BFP720F ( _node111 _node22 _node31 _node32)
+
+C:cbepar _node2 _node3 C=2.472e-013
+C:cbcpar _node2 _node10 C=2.305e-014
+C:ccepar _node10 _node3 C=1.782e-013
+L:lex _node30 _node33 L=5.158e-015
+L:lbx _node20 _node22 L=4.607e-010
+L:lcx _node11 _node111 L=1.956e-012
+C:cbepck _node20 _node30 C=5.382e-014
+C:cbcpck _node11 _node20 C=7.955e-015
+C:ccepck _node11 _node30 C=5.43e-014
+L:lb _node2 _node20 L=5.778e-012
+L:le _node3 _node30 L=6.499e-011
+L:lc _node10 _node11 L=6.19e-010
+
+R:re1 _node33 _node31 R=1e-03
+R:re2 _node33 _node32 R=1e-03
+
+R:rsub _node4 _node30 R=260
+R:rcx _node1 _node10 R=1
+
+m_diode_sub:diode_sub _node4 _node1 Mode=1
+
+model m_diode_sub Diode Is=2.8e-017 N=1.12056 Rs=1380 Cjo=4e-014 Tnom=25 Nbv=1.12056 Vj=0.8 \
+      IkModel=2
+
+m_bfp720f:q1 _node1 _node2 _node3 Mode=1
+
+model m_bfp720f BJT Tnom=25 Is=4.011e-016 Bf=783.1 Nf=0.9902 Vaf=85.4 Ikf=0.1076 Ise=3.207e-015 \
+      Ne=1.72 Br=96.7489 Nr=0.988174 Var=1.299 Ikr=0.00957834 Isc=2.75941e-016 Nc=1.89506 \
+      Rb=1.857 Irb=0.000703 Rbm=0.9318 Re=0.2409 Rc=20 Xtb=-2.482 Eg=1.11 Xti=0.808 Cje=1.274e-014 \
+      Vje=0.9206 Mje=0.7053 Tf=1.787e-012 Xtf=4.073 Vtf=0.3278 Itf=0.0008605 Ptf=1.208e-012 \
+      Cjc=2.029e-014 Vjc=0.01 Mjc=3.12e-005 Xcjc=0.647 Tr=6e-010 Cjs=7.762e-014 Mjs=0.07466 \
+      Vjs=0.1179 Fc=0.8156 Kf=2.56e-011 Af=1.8 NPN=1 PNP=0 RbModel=1 Tlev=0 Tlevc=0
+
+
+;**************************************************************
+end bfp720f
